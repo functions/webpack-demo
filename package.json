@@ -1,0 +1,19 @@
+{
+  "name": "webpack-sample",
+  "version": "1.0.0",
+  "description": "webpack sample ",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "scripts": {
+  },
+  "keywords": [
+    "webpack",
+    "sample"
+  ],
+  "author": "functions",
+  "license": "MIT"
+}
