@@ -3,6 +3,10 @@
  *     webpack.config.js
  */
 var Path = require('path');
+var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var extractCSS = new ExtractTextPlugin('[name].css');
+var ProgressPlugin = require('webpack/lib/ProgressPlugin');
 
 module.exports = {
     // 多入口文件的配置
@@ -24,6 +28,8 @@ module.exports = {
         }
     },
 
+    devtool: '#source-map',
+
     module: {
         // 首先执行的 loader; 这里可以引入一些语法检查工具等;
         preloaders: [],
@@ -33,10 +39,7 @@ module.exports = {
             // 处理 css
             {
                 test: /\.css$/,
-                loaders: ['style-loader', 'css-loader']
-                // loaders: ['style', 'css']    // 简写方式
-                // loader: 'style-loader!css-loader'    // 简写方式
-                // loader: 'style!css'      // 更简写方式
+                loader: extractCSS.extract(['css?sourceMap&minimize', 'postcss?parser=postcss-scss'])
             },
             // 处理 js 
             {
@@ -47,5 +50,28 @@ module.exports = {
 
         // 最后执行的 loader, 这里可以执行一些单元测试, 覆盖率测试等;
         postloaders: []
+    },
+
+    plugins: [
+        // 导出 css 文件
+        extractCSS,
+        // 压缩 js
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        }),
+        // 显示加载进度
+        new ProgressPlugin(function(percentage, msg) {
+            console.log(parseInt(percentage * 100) + '%', msg);
+        })
+    ],
+
+    // postcss 处理器
+    postcss: function() {
+        return [
+            require('precss'),
+            require('postcss-cssnext')()
+        ]
     }
 };
