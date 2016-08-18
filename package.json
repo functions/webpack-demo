@@ -18,7 +18,9 @@
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },
-  "scripts": {},
+  "scripts": {
+    "wbpk": "webpack --colors --profile --display-modules"
+  },
   "keywords": [
     "webpack",
     "sample"

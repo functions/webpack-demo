@@ -74,4 +74,5 @@ module.exports = {
             require('postcss-cssnext')()
         ]
     }
+
 };
