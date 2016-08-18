@@ -5,11 +5,7 @@
     color: #333;
     display: flex;
 
-    .left {
-        width: 200px;
-    }
-
-    .content {
-        flex: 1;
+    &.title {
+        color: #ff6622;
     }
 }

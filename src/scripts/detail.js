@@ -1,6 +1,6 @@
 
 module.exports = {
     getHtml: function() {
-        return '<h1>List</h1>';
+        return '<h1>Detail</h1>';
     }
-}
+};

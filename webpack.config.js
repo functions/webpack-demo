@@ -7,12 +7,14 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var extractCSS = new ExtractTextPlugin('[name].css');
 var ProgressPlugin = require('webpack/lib/ProgressPlugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     // 多入口文件的配置
     entry: {
         index: './src/scripts/index.js',
-        list: './src/scripts/list.js'
+        base: ['jquery']
     },
 
     output: {
@@ -44,6 +46,7 @@ module.exports = {
             // 处理 js 
             {
                 test: /\.js$/,
+                exclude: /node_modules/,
                 loaders: ['babel-loader?presets[]=es2015,presets[]=stage-0']
             }
         ],
@@ -53,6 +56,18 @@ module.exports = {
     },
 
     plugins: [
+        // 清空编译后的目录
+        new CleanWebpackPlugin(['prd']),
+        // 打包第三方库
+        new webpack.optimize.CommonsChunkPlugin('base', 'base.js'),
+        // 第三方库的引用设置为全局变量
+        new webpack.ProvidePlugin({
+            $: "jquery"
+        }),
+        // 自动生成 html 
+        new HtmlWebpackPlugin({
+            template: './html/index.html'
+        }),
         // 导出 css 文件
         extractCSS,
         // 压缩 js
