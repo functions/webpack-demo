@@ -1,7 +1,6 @@
 import 'Styles/index.css';
 import NavComp from './modules/NavComp.js';
 
-
 let bindNavEvent = () => {
     $('.head').on('click', '.js-nav-item', function() {
         let pageId = this.getAttribute('data-page-id'),
