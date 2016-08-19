@@ -8,8 +8,6 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var extractCSS = new ExtractTextPlugin('[name]@[chunkhash].css');
 var ProgressPlugin = require('webpack/lib/ProgressPlugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
-var WebpackMd5Hash = require('webpack-md5-hash');
 
 var libsManifestJSON = require('./libs/vendors_manifest.json');
 
@@ -17,14 +15,19 @@ var libsManifestJSON = require('./libs/vendors_manifest.json');
 module.exports = {
     // 多入口文件的配置
     entry: {
-        index: './src/scripts/index.js'
+        index: [
+            'webpack-dev-server/client?http://127.0.0.1:3000',
+            'webpack/hot/only-dev-server',
+            './src/scripts/index.js'
+        ]
     },
 
     output: {
-        path: './prd/',
-        filename: '[name]@[chunkhash].js',
+        path: path.resolve('./prd/'),
+        publicPath: '/',
+        filename: '[name].js',
             // 这里的 [name] 对应 entry 的 key 
-        chunkFilename: "[id].chunk@[chunkhash].js"
+        chunkFilename: '[id].chunk.js'
     },
 
     resolve: {
@@ -40,43 +43,29 @@ module.exports = {
     devtool: '#cheap-source-map',
 
     module: {
-        // 不扫描的文件或目录，正则匹配
-        noParse: [
-            /prd/,
-            /libs/
-        ],
-        // 首先执行的 loader; 这里可以引入一些语法检查工具等;
-        preloaders: [],
-
         // 其次执行的 loader 
         loaders: [
             // 处理 css
             {
                 test: /\.css$/,
-                loader: extractCSS.extract(['css?sourceMap&minimize', 'postcss?parser=postcss-scss'])
+                // loader: extractCSS.extract(['css?sourceMap', 'postcss?parser=postcss-scss'])
+                loaders: ['style', 'css?sourceMap', 'postcss?parser=postcss-scss']
             },
             // 处理 js 
             {
                 test: /\.jsx?$/,
                 include: /src\/scripts/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['es2015', 'stage-0']
-                }
+                loaders: ['babel-loader?presets[]=es2015&presets[]=stage-0']
             },
             {
                 test: /\.json$/,
                 loader: 'json-loader'
             }
-        ],
-
-        // 最后执行的 loader, 这里可以执行一些单元测试, 覆盖率测试等;
-        postloaders: []
+        ]
     },
 
     plugins: [
-        // 清空编译后的目录
-        new CleanWebpackPlugin(['prd']),
+        new webpack.HotModuleReplacementPlugin(),
         // 引用打包好的第三方库
         new webpack.DllReferencePlugin({
             context: __dirname,
@@ -92,15 +81,7 @@ module.exports = {
             vendorFileName: '../libs/' + libsManifestJSON.name.replace('_', '@') + '.js'
         }),
         // 导出 css 文件
-        extractCSS,
-        // 压缩 js
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
-        // 根据文件内容生成 MD5
-        new WebpackMd5Hash(),
+        // extractCSS,
         // 显示加载进度
         new ProgressPlugin(function(percentage, msg) {
             console.log(parseInt(percentage * 100) + '%', msg);

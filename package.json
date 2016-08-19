@@ -23,12 +23,15 @@
     "clean-webpack-plugin": "^0.1.10",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "happypack": "^2.2.1",
     "html-webpack-plugin": "^2.22.0",
     "json-loader": "^0.5.4",
+    "open": "0.0.5",
     "postcss-cssnext": "^2.7.0",
     "postcss-loader": "^0.10.0",
     "postcss-scss": "^0.1.9",
     "precss": "^1.4.0",
+    "react-hot-loader": "^1.3.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.14.1",
@@ -36,7 +39,8 @@
   },
   "scripts": {
     "wbpk": "webpack --colors --profile --display-modules",
-    "dll": "webpack --config webpack.libs.js"
+    "dll": "webpack --config webpack.libs.js",
+    "dev": "node webpack.dev.server.js"
   },
   "keywords": [
     "webpack",

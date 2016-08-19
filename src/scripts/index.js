@@ -6,6 +6,8 @@ let bindNavEvent = () => {
         let pageId = this.getAttribute('data-page-id'),
             $container = $('body > .main');
 
+        // console.log('msg')
+
         // 首页
         if(pageId === 'home') {
             require.ensure([], () => {
