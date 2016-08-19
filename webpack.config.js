@@ -11,7 +11,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var WebpackMd5Hash = require('webpack-md5-hash');
 
-var manifestJSON = require('./libs/manifest.json');
+var libsManifestJSON = require('./libs/vendors_manifest.json');
 
 
 module.exports = {
@@ -37,6 +37,10 @@ module.exports = {
     devtool: '#source-map',
 
     module: {
+        // 不扫描的文件或目录，正则匹配
+        noParse: [
+            /prd/
+        ],
         // 首先执行的 loader; 这里可以引入一些语法检查工具等;
         preloaders: [],
 
@@ -66,12 +70,10 @@ module.exports = {
     plugins: [
         // 清空编译后的目录
         new CleanWebpackPlugin(['prd']),
-        // 打包第三方库
-        // new webpack.optimize.CommonsChunkPlugin(),
         // 引用打包好的第三方库
         new webpack.DllReferencePlugin({
             context: __dirname,
-            manifest: manifestJSON
+            manifest: libsManifestJSON
         }),
         // 第三方库的引用设置为全局变量
         new webpack.ProvidePlugin({
@@ -80,7 +82,7 @@ module.exports = {
         // 自动生成 html 
         new HtmlWebpackPlugin({
             template: './html/index.html',
-            vendorFileName: '../libs/' + manifestJSON.name + '.js'
+            vendorFileName: '../libs/' + libsManifestJSON.name + '.js'
         }),
         // 导出 css 文件
         extractCSS,

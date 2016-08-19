@@ -1,7 +1,7 @@
 {
-  "name": "vendors_7acc5d57b58f3a854f16",
+  "name": "vendors_c5f3f028c5008c4719bc",
   "content": {
-    "./node_modules/antd/dist/antd.js": 1,
+    "./node_modules/react/lib/ReactServerRenderingTransaction.js": 135,
     "./node_modules/react/react.js": 2,
     "./node_modules/react/lib/React.js": 3,
     "./node_modules/process/browser.js": 4,
@@ -135,7 +135,7 @@
     "./node_modules/react/lib/ReactEmptyComponent.js": 132,
     "./node_modules/react/lib/ReactHostComponent.js": 133,
     "./node_modules/react/lib/flattenChildren.js": 134,
-    "./node_modules/react/lib/ReactServerRenderingTransaction.js": 135,
+    "./node_modules/antd/dist/antd.js": 1,
     "./node_modules/react/lib/ReactServerUpdateQueue.js": 136,
     "./node_modules/react/lib/ReactUpdateQueue.js": 137,
     "./node_modules/react/lib/validateDOMNesting.js": 138,
