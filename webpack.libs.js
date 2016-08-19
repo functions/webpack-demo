@@ -24,7 +24,7 @@ module.exports = {
 
     output: {
         path: path.resolve('./libs/'),
-        filename: '[name]_[chunkhash].js',
+        filename: '[name]@[chunkhash].js',
         library: '[name]_[chunkhash]'
     },
 
@@ -34,6 +34,12 @@ module.exports = {
             path: path.resolve('./libs/[name]_manifest.json'),
             name: '[name]_[chunkhash]',
             context: __dirname
+        }),
+        // 压缩 js
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
         }),
         // 根据文件内容生成 MD5
         new WebpackMd5Hash()

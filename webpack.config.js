@@ -2,7 +2,7 @@
  * at project root dir:
  *     webpack.config.js
  */
-var Path = require('path');
+var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var extractCSS = new ExtractTextPlugin('[name]@[chunkhash].css');
@@ -28,9 +28,12 @@ module.exports = {
     },
 
     resolve: {
+        // 指定解析的路径
+        root: path.resolve('src'),
+        extensions: ['', '.js', '.jsx', '.css'],
         // 配置路径的别名
         alias: {    // 别名的路径都必须使用绝对路径
-            Styles: Path.resolve('./src/styles')
+            Styles: path.resolve('./src/styles')
         }
     },
 
@@ -39,7 +42,8 @@ module.exports = {
     module: {
         // 不扫描的文件或目录，正则匹配
         noParse: [
-            /prd/
+            /prd/,
+            /libs/
         ],
         // 首先执行的 loader; 这里可以引入一些语法检查工具等;
         preloaders: [],
@@ -82,7 +86,7 @@ module.exports = {
         // 自动生成 html 
         new HtmlWebpackPlugin({
             template: './html/index.html',
-            vendorFileName: '../libs/' + libsManifestJSON.name + '.js'
+            vendorFileName: '../libs/' + libsManifestJSON.name.replace('_', '@') + '.js'
         }),
         // 导出 css 文件
         extractCSS,
